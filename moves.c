@@ -22,12 +22,16 @@ static void rotateFaceClockwise(char face[9])
     face[8] = temp[2];
 }
 
+/*  Gira uma face do cubo 90 graus no sentido anti-horário.
+
 static void rotateFaceCounterClockwise(char face[9])
 {
     rotateFaceClockwise(face);
     rotateFaceClockwise(face);
     rotateFaceClockwise(face);
-}
+} 
+    
+*/
 
 void moveU(Cube *cube)
 {
@@ -133,30 +137,156 @@ void moveLi(Cube *cube)
 
 void moveR(Cube *cube)
 {
-    (void)cube;
+    rotateFaceClockwise(cube->face[RIGHT]);
+
+    char temp[3];
+
+    temp[0] = cube->face[UP][2];
+    temp[1] = cube->face[UP][5];
+    temp[2] = cube->face[UP][8];
+
+    cube->face[UP][2] = cube->face[FRONT][2];
+    cube->face[UP][5] = cube->face[FRONT][5];
+    cube->face[UP][8] = cube->face[FRONT][8];
+
+    cube->face[FRONT][2] = cube->face[DOWN][2];
+    cube->face[FRONT][5] = cube->face[DOWN][5];
+    cube->face[FRONT][8] = cube->face[DOWN][8];
+
+    cube->face[DOWN][2] = cube->face[BACK][6];
+    cube->face[DOWN][5] = cube->face[BACK][3];
+    cube->face[DOWN][8] = cube->face[BACK][0];
+
+    cube->face[BACK][6] = temp[0];
+    cube->face[BACK][3] = temp[1];
+    cube->face[BACK][0] = temp[2];
 }
 
 void moveRi(Cube *cube)
 {
-    (void)cube;
+    moveR(cube);
+    moveR(cube);
+    moveR(cube);
 }
 
 void moveF(Cube *cube)
 {
-    (void)cube;
+    rotateFaceClockwise(cube->face[FRONT]);
+
+    char temp[3];
+
+    temp[0] = cube->face[UP][6];
+    temp[1] = cube->face[UP][7];
+    temp[2] = cube->face[UP][8];
+
+    cube->face[UP][6] = cube->face[LEFT][8];
+    cube->face[UP][7] = cube->face[LEFT][5];
+    cube->face[UP][8] = cube->face[LEFT][2];
+
+    cube->face[LEFT][2] = cube->face[DOWN][0];
+    cube->face[LEFT][5] = cube->face[DOWN][1];
+    cube->face[LEFT][8] = cube->face[DOWN][2];
+
+    cube->face[DOWN][0] = cube->face[RIGHT][6];
+    cube->face[DOWN][1] = cube->face[RIGHT][3];
+    cube->face[DOWN][2] = cube->face[RIGHT][0];
+
+    cube->face[RIGHT][0] = temp[0];
+    cube->face[RIGHT][3] = temp[1];
+    cube->face[RIGHT][6] = temp[2];
 }
 
 void moveFi(Cube *cube)
 {
-    (void)cube;
+    moveF(cube);
+    moveF(cube);
+    moveF(cube);
 }
 
 void moveB(Cube *cube)
 {
-    (void)cube;
+    rotateFaceClockwise(cube->face[BACK]);
+
+    char temp[3];
+
+    temp[0] = cube->face[UP][0];
+    temp[1] = cube->face[UP][1];
+    temp[2] = cube->face[UP][2];
+
+    cube->face[UP][0] = cube->face[RIGHT][2];
+    cube->face[UP][1] = cube->face[RIGHT][5];
+    cube->face[UP][2] = cube->face[RIGHT][8];
+
+    cube->face[RIGHT][2] = cube->face[DOWN][8];
+    cube->face[RIGHT][5] = cube->face[DOWN][7];
+    cube->face[RIGHT][8] = cube->face[DOWN][6];
+
+    cube->face[DOWN][6] = cube->face[LEFT][0];
+    cube->face[DOWN][7] = cube->face[LEFT][3];
+    cube->face[DOWN][8] = cube->face[LEFT][6];
+
+    cube->face[LEFT][0] = temp[2];
+    cube->face[LEFT][3] = temp[1];
+    cube->face[LEFT][6] = temp[0];
 }
 
 void moveBi(Cube *cube)
 {
-    (void)cube;
+    moveB(cube);
+    moveB(cube);
+    moveB(cube);
+}
+
+void applyMove(Cube *cube, int move)
+{
+    switch (move)
+    {
+        case MOVE_U:
+            moveU(cube);
+            break;
+
+        case MOVE_UI:
+            moveUi(cube);
+            break;
+
+        case MOVE_D:
+            moveD(cube);
+            break;
+
+        case MOVE_DI:
+            moveDi(cube);
+            break;
+
+        case MOVE_L:
+            moveL(cube);
+            break;
+
+        case MOVE_LI:
+            moveLi(cube);
+            break;
+
+        case MOVE_R:
+            moveR(cube);
+            break;
+
+        case MOVE_RI:
+            moveRi(cube);
+            break;
+
+        case MOVE_F:
+            moveF(cube);
+            break;
+
+        case MOVE_FI:
+            moveFi(cube);
+            break;
+
+        case MOVE_B:
+            moveB(cube);
+            break;
+
+        case MOVE_BI:
+            moveBi(cube);
+            break;
+    }
 }

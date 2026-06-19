@@ -31,6 +31,9 @@ int main()
     testMove(&cube, moveU, moveUi, "U");
     testMove(&cube, moveD, moveDi, "D");
     testMove(&cube, moveL, moveLi, "L");
+    testMove(&cube, moveR, moveRi, "R");
+    testMove(&cube, moveF, moveFi, "F");
+    testMove(&cube, moveB, moveBi, "B");
 
     return 0;
 }
