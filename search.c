@@ -63,6 +63,67 @@ void generateChildren(Node *node)
     }
 }
 
+Node *depthLimitedSearch(Node *node, int limit)
+{
+    if (isSolved(&node->state))
+    {
+        return node;
+    }
+
+    if (node->depth >= limit)
+    {
+        return NULL;
+    }
+
+    generateChildren(node);
+
+    for (int i = 0; i < MAX_CHILDREN; i++)
+    {
+        Node *result =
+            depthLimitedSearch(
+                node->children[i],
+                limit
+            );
+
+        if (result != NULL)
+        {
+            return result;
+        }
+    }
+
+    return NULL;
+}
+
+void printSolution(Node *solution)
+{
+    if (solution == NULL)
+    {
+        return;
+    }
+
+    printSolution(solution->parent);
+
+    if (solution->parent != NULL)
+    {
+        printf("%s ", solution->move);
+    }
+}
+
+void freeTree(Node *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    for (int i = 0; i < MAX_CHILDREN; i++)
+    {
+        freeTree(node->children[i]);
+    }
+
+    free(node);
+}
+
 void solveCube(Cube *cube)
 {
     printf("\n===== CUBO RECEBIDO =====\n\n");
@@ -71,7 +132,7 @@ void solveCube(Cube *cube)
 
     if (isSolved(cube))
     {
-        printf("O cubo ja esta resolvido.\n");
+        printf("\nO cubo ja esta resolvido.\n");
         return;
     }
 
@@ -91,25 +152,26 @@ void solveCube(Cube *cube)
         return;
     }
 
-    generateChildren(root);
+    Node *solution =
+        depthLimitedSearch(
+            root,
+            3
+        );
 
-    printf("\nPrimeira camada da arvore:\n\n");
+    if (solution != NULL)
+    {
+        printf("\nSolucao encontrada:\n\n");
 
-    for (int i = 0; i < MAX_CHILDREN; i++)
+        printSolution(solution);
+
+        printf("\n");
+    }
+    else
     {
         printf(
-            "Filho %02d -> %s\n",
-            i,
-            root->children[i]->move
+            "\nNenhuma solucao encontrada ate profundidade 3.\n"
         );
     }
 
-    printf(
-        "\nTotal de filhos gerados: %d\n",
-        MAX_CHILDREN
-    );
-
-    printf(
-        "\nBusca ainda nao implementada.\n"
-    );
+    freeTree(root);
 }

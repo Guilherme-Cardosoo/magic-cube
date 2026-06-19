@@ -10,6 +10,12 @@ Node *createNode(const Cube *cube,
 
 void generateChildren(Node *node);
 
+Node *depthLimitedSearch(Node *node, int limit);
+
+void printSolution(Node *solution);
+
+void freeTree(Node *node);
+
 void solveCube(Cube *cube);
 
 #endif

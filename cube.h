@@ -18,7 +18,6 @@ void printCube(const Cube *cube);
 int isSolved(const Cube *cube);
 void copyCube(Cube *dest, const Cube *src);
 
-/* NOVA FUNÇÃO */
 int compareCube(const Cube *a, const Cube *b);
 
 #endif

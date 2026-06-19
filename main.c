@@ -1,3 +1,20 @@
+#include "cube.h"
+#include "search.h"
+
+int main()
+{
+    Cube cube;
+
+    readCube(&cube);
+
+    solveCube(&cube);
+
+    return 0;
+}
+
+
+/*
+
 #include <stdio.h>
 
 #include "cube.h"
@@ -37,3 +54,6 @@ int main()
 
     return 0;
 }
+
+*/
+
